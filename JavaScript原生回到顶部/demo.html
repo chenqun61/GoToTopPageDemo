@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>回到顶部</title>
+	<style>
+		.box {
+			width: 1190px;
+			margin: 0 auto;
+		}
+
+		#btn {
+			width: 40px;
+			height: 40px;
+			position: fixed;
+			left: 50%;
+			margin-left: 610px;
+			bottom: 60px;
+			background: url(images/top_bg.png) no-repeat left top;
+			display: none;
+		}
+
+		#btn:hover {
+			background: url(images/top_bg.png) no-repeat left -40px;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="box">
+		<img src="images/tb_bg.jpg" alt="">
+	</div>
+	<a href="javascript:void(0);" id="btn" title="回到顶部"></a>
+</body>
+<script>
+	//页面加载完毕后触发
+	window.onload = function () {
+		var obtn = document.getElementById('btn');
+		var timer = null;
+		var isTop = true;
+		//获取页面可视区域的高度
+		var clientHeight = document.documentElement.clientHeight;
+		obtn.onclick = function () {
+			timer = setInterval(function () {
+				//获取滚动条到顶部的距离
+				var osTop = document.documentElement.scrollTop || document.body.scrollTop;//处理兼容性问题
+				var ispeed = Math.ceil(osTop / 6);
+				document.documentElement.scrollTop = document.body.scrollTop = osTop - ispeed;
+				isTop = true;
+				if(osTop == 0){
+					clearInterval(timer);
+				}
+			},30);
+		}
+
+
+		//它会在滚动条滚动的时候不断的触发
+		window.onscroll = function(){
+			console.log('上面'+isTop)
+			if(!isTop){
+				clearInterval(timer);
+				console.log(99)
+			}
+			isTop = false;
+			console.log('下面'+isTop)
+
+			//控制按钮的显示和隐藏
+			var osTop = document.documentElement.scrollTop || document.body.scrollTop;
+			if(osTop >= clientHeight){
+				obtn.style.display = 'block';
+			}else{
+				obtn.style.display = 'none';
+			}
+		}
+	}
+</script>
+
+</html>
